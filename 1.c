@@ -110,6 +110,20 @@
       mysql_close(conexion);
       return lista1;
     }
+  //Imprimir la Lista de Clientes
+    void imprimir_lista( ListaClientes *lista ){
+      nodoCliente *iterador;
+      iterador = lista -> headClientes;
+      if( iterador == NULL ){
+        puts("ADVERTENCIA: La base de datos se encuentra vacia");
+      }
+
+      while( iterador!=NULL ){
+        printf("%d      ",iterador->id);
+        puts((iterador->datos).nombre);
+        iterador=iterador->sig;
+      }
+    }
   //Insertar nuevo cliente
     void insertar_nvo_cliente(char*nombre){
       MYSQL *conexion;
