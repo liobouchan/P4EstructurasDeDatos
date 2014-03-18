@@ -73,5 +73,60 @@
       iterador -> sig = aux;
       return;
     }
+  //Consultar Lista de Clientes
+    ListaClientes* consulta(){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char sentencia[100]="SELECT * from clientes ;";
+      char buffer[512];
+      mysql_query(conexion,sentencia);
+      R = mysql_use_result(conexion);
+      ListaClientes* lista1 = NULL;
+      lista1 = crearListaClientes(lista1);
+      if(R!=NULL){
+        COL = mysql_fetch_row(R);
+      while (COL != NULL){
+        int id;
+        char *ptr,*ptr2;
+        DatosCliente info;
+        ptr = COL[0];
+        ptr2 = COL[1];
+        id = atoi(ptr);
+        strcpy(info.nombre,ptr2);
+        insertar_nodo_clientes(&lista1,id,info);
+        COL = mysql_fetch_row(R);
+      }
+      }else{
+        puts("ADVERTENCIA: La base de datos se encuentra vacia"); 
+      }
+      mysql_close(conexion);
+      return lista1;
+    }
+  //Insertar nuevo cliente
+    void insertar_nvo_cliente(char*nombre){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char *sentencia="insert into clientes(nombre) values(";
+      char buffer[500];
+      sprintf(buffer,"%s'%s'); ",sentencia,nombre);
+      mysql_query(conexion,buffer);
+      mysql_close(conexion);
+    }
 int main(){
 }
