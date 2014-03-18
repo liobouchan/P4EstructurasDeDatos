@@ -33,26 +33,37 @@
   }ListaClientes;
 //Funciones
   //Inicializar Lista
+    /**Crea dinamicamente una Lista de clientes con base en el struct
+       La inicializa creando el primer valor como Null**/
     ListaClientes* crearListaClientes( ListaClientes * l1 ){
       l1 = malloc(sizeof(ListaClientes));
       l1 -> headClientes = NULL;
       return l1;
     }
   //Insertar nodo cliente
+    /**Aqui se empieza a llenar un nodo del Struct Lista Clientes**/
     void insertar_nodo_clientes(ListaClientes** lista,int llave, DatosCliente informacion){ 
+      /**Crearemos variables del tipo struct nodo, y al auxiliar lo
+          inicializaremos a semejanza del nodoCLiente**/
       nodoCliente *aux, *iterador;
       aux = malloc(sizeof(nodoCliente));
 
       if( aux == NULL ){
         return; 
       }
+      /**Ahora le asignamos los valores que nos pasaron por referencia desde
+        el inicio a nuestra variable auxiliar**/
+      aux -> datos = informacion;
+      aux -> id = llave;
+      aux -> ant = NULL;
+      aux -> sig = NULL;
+      aux -> headBien = NULL;
 
-      aux->datos=informacion;
-      aux->id=llave;
-      aux->ant=NULL;
-      aux->sig=NULL;
-      aux->headBien=NULL;
-
+      /**Si la el valor de lista headClientes es igual a NULL entonces igualar
+        el valor con aux
+        Si el valor de headCLientes id es igual a la llave dada, el valor
+        siguiente del auxiliar será el actual HeadClientes, y  el valor
+        del axiliar actual será igual al headClientes osea el anterior**/
       if( (*lista) -> headClientes == NULL ){
         (*lista) -> headClientes = aux;
         return; 
