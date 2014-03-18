@@ -38,5 +38,40 @@
       l1 -> headClientes = NULL;
       return l1;
     }
+  //Insertar nodo cliente
+    void insertar_nodo_clientes(ListaClientes** lista,int llave, DatosCliente informacion){ 
+      nodoCliente *aux, *iterador;
+      aux = malloc(sizeof(nodoCliente));
+
+      if( aux == NULL ){
+        return; 
+      }
+
+      aux->datos=informacion;
+      aux->id=llave;
+      aux->ant=NULL;
+      aux->sig=NULL;
+      aux->headBien=NULL;
+
+      if( (*lista) -> headClientes == NULL ){
+        (*lista) -> headClientes = aux;
+        return; 
+      }
+      if( (*lista) -> headClientes -> id == llave ){
+        aux -> sig = (*lista) -> headClientes;
+        (*lista) -> headClientes = aux;
+        return;
+      }
+
+      iterador = (*lista) -> headClientes;
+
+      while( iterador -> sig != NULL ){
+        iterador=iterador->sig;
+      }
+
+      aux -> ant = iterador;
+      iterador -> sig = aux;
+      return;
+    }
 int main(){
 }
