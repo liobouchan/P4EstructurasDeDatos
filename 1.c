@@ -5,6 +5,32 @@
 #include <mysql/mysql.h>
 #include <string.h>
 
+//Estructuras a usar
+  typedef struct{
+    char nombre[100];
+  }DatosCliente;
+
+  typedef struct{
+    char nombre[100];
+    float costo;
+  }DatosBien;
+
+  typedef struct nodoBien{
+    DatosBien datos; 
+    int ID;
+  }nodoBien;
+
+  typedef struct nodo{
+    int id;
+    DatosCliente datos;
+    struct nodo *sig;
+    struct nodo *ant;
+    nodoBien *headBien; 
+  }nodoCliente;
+
+  typedef struct{
+    nodoCliente *headClientes; 
+  }ListaClientes;
 //Funciones
   //Insertar Cliente
     void insertar_nvo_cliente ( char*nombre ){
