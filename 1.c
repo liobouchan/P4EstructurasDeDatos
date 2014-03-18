@@ -32,5 +32,11 @@
     nodoCliente *headClientes; 
   }ListaClientes;
 //Funciones
+  //Inicializar Lista
+    ListaClientes* crearListaClientes( ListaClientes * l1 ){
+      l1 = malloc(sizeof(ListaClientes));
+      l1 -> headClientes = NULL;
+      return l1;
+    }
 int main(){
 }
