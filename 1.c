@@ -270,40 +270,37 @@
         puts("El cliente no existe"); 
       }
     }
-  void insertar_bien(nodoCliente** cliente, int llave,DatosBien info){
-  nodoBien *aux, *iterador;
-  aux=malloc(sizeof(nodoBien));
-  if(aux==NULL){
-    return; 
-  }
-  aux->datos=info;
-  aux->ID=llave;
-  aux->sig=NULL;
+  //Insetart un Nodo de BIEN
+    void insertar_bien(nodoCliente** cliente, int llave,DatosBien info){
+      nodoBien *aux, *iterador;
+      aux=malloc(sizeof(nodoBien));
+      if(aux==NULL){
+        return; 
+      }
+      aux->datos=info;
+      aux->ID=llave;
+      aux->sig=NULL;
 
-  if((*cliente)->headBien==NULL){
-    (*cliente)->headBien=aux;
+      if((*cliente)->headBien==NULL){
+        (*cliente)->headBien=aux;
+        return; 
+      }
+      if((*cliente)->headBien->ID==llave){
+        aux->sig=(*cliente)->headBien;
+        (*cliente)->headBien=aux;
+      return; 
+      }
+
+      iterador=(*cliente)->headBien;
+
+      while(iterador->sig!=NULL){
+        iterador=iterador->sig;   
+      }
+
+      iterador->sig=aux;
+      return;
+    }
     
-    
-    return; 
-  }
-  if((*cliente)->headBien->ID==llave){
-    aux->sig=(*cliente)->headBien;
-    (*cliente)->headBien=aux;
-    return; 
-  }
-
-  iterador=(*cliente)->headBien;
-
-  while(iterador->sig!=NULL){
-    iterador=iterador->sig;   
-
-  }
-  
-  iterador->sig=aux;
-  
-  return;
-
-}
 //Main
   int main(){
     int val;
