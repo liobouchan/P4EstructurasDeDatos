@@ -128,11 +128,11 @@
       if( iterador == NULL ){
         puts("ADVERTENCIA: La base de datos se encuentra vacia");
       }
-
-      while( iterador!=NULL ){
+      /**Mientras el iterador no tenga el valor Nulo, pediremos el id y nombre**/
+      while( iterador != NULL ){
         printf("%d      ",iterador->id);
         puts((iterador->datos).nombre);
-        iterador=iterador->sig;
+        iterador = iterador -> sig;
       }
     }
   //Insertar nuevo cliente
@@ -153,5 +153,224 @@
       mysql_query(conexion,buffer);
       mysql_close(conexion);
     }
+    void eliminar_cliente(char*nombre){
+  MYSQL *conexion;
+  MYSQL_RES *R;
+    MYSQL_ROW COL;
+  char *servidor = "localhost";
+  char *usuario = "root";
+  char *pass = "1234";
+  char *base = "casaempenio";
+  conexion = mysql_init(NULL);
+    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+  char *sentencia="DELETE FROM clientes where nombre=";
+  char buffer[500];
+  sprintf(buffer,"%s'%s'; ",sentencia,nombre);
+  mysql_query(conexion,buffer);
+  mysql_close(conexion);
+  
+}
+
+void modificar_cliente(char*nombre, char*nombre2){
+  MYSQL *conexion;
+  MYSQL_RES *R;
+    MYSQL_ROW COL;
+  char *servidor = "localhost";
+  char *usuario = "root";
+  char *pass = "1234";
+  char *base = "casaempenio";
+  conexion = mysql_init(NULL);
+    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+  char *sentencia = "update clientes set nombre=";
+    char *sentencia2 = "WHERE nombre=";
+  char buffer[500];
+  sprintf(buffer,"%s '%s' %s '%s';",sentencia,nombre,sentencia2,nombre2);
+  mysql_query(conexion,buffer);
+  mysql_close(conexion);
+  
+}
+
+void agregar_cliente_lista(ListaClientes **l1, DatosCliente info_nueva){
+  MYSQL *conexion;
+  MYSQL_RES *R;
+    MYSQL_ROW COL;
+  char *servidor = "localhost";
+  char *usuario = "root";
+  char *pass = "1234";
+  char *base = "casaempenio";
+  conexion = mysql_init(NULL);
+    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+  char *sentencia="SELECT * from clientes where nombre=";
+  char buffer[500];
+  sprintf(buffer,"%s '%s' ;",sentencia,(info_nueva.nombre));
+  mysql_query(conexion,buffer);
+  R= mysql_use_result(conexion);
+  if(R!=NULL){
+    COL = mysql_fetch_row(R);
+    
+    while (COL != NULL){
+      
+      int id;
+      char *ptr,*ptr2;
+      DatosCliente info;
+      ptr=COL[0];
+      ptr2=COL[1];
+      id=atoi(ptr);
+      strcpy(info.nombre,ptr2);
+        
+      insertar_nodo_clientes(l1,id,info);
+      COL = mysql_fetch_row(R);
+      
+    }
+    
+  }else{
+    puts("El dato solicitado no se pudo ingresar en la base de datos"); 
+  }
+  
+  mysql_close(conexion);
+}
+int buscar_en_lista(ListaClientes **l1, char* nombre){
+  nodoCliente* iterador=(*l1)->headClientes;  
+  int i=0;
+  while(iterador!=NULL){
+    if(strcmp((iterador->datos.nombre),nombre)==0){
+    i=1;
+    break;
+    }
+    iterador=iterador->sig;
+  }
+  return i;
+}
+
+void eliminar_en_lista(ListaClientes **l1, DatosCliente info){
+  nodoCliente* iterador=(*l1)->headClientes;
+  while(iterador!=NULL){
+    if(strcmp((iterador->datos.nombre),(info.nombre))==0){
+    break;
+    }
+    iterador=iterador->sig;
+  }
+  if(iterador!=NULL){
+    char *nvo_nombre = NULL;
+    if(buscar_en_lista(l1,info.nombre)==0){
+      modificar_cliente(nvo_nombre, iterador->datos.sig);
+      strcpy(iterador->datos.sig,nvo_nombre);
+      strcpy(iterador->datos.ant,nvo_nombre);
+    }else{
+      puts("El cliente ya existe");
+    }
+  }else{
+    puts("El cliente no existe"); 
+  }
+}
+
+void modificar_en_lista(ListaClientes **l1, DatosCliente info){
+  nodoCliente* iterador=(*l1)->headClientes;
+  while(iterador!=NULL){
+    if(strcmp((iterador->datos.nombre),(info.nombre))==0){
+    break;
+    }
+    iterador=iterador->sig;
+  }
+  if(iterador!=NULL){
+    char *nvo_nombre;
+    puts("Escribe el nuevo nombre");
+    setbuf(stdin,NULL);
+    gets(nvo_nombre);
+    while(strcmp(nvo_nombre,"")==0){
+      puts("Escriba un nombre valido");
+      setbuf(stdin,NULL);
+      gets(nvo_nombre);   
+    }
+    if(buscar_en_lista(l1,nvo_nombre)==0){
+      modificar_cliente(nvo_nombre, iterador->datos.nombre);
+      strcpy(iterador->datos.nombre,nvo_nombre);
+    }else{
+      puts("El cliente ya existe");
+    }
+  }else{
+    puts("El cliente no existe"); 
+  }
+}
 int main(){
+  int val;
+  ListaClientes *Lista;
+  Lista=consulta();
+  system("clear");
+  do{
+    puts("Bienvenido al Sistema de Bienes. ¿Que desea realizar? ");
+    puts("Escriba 1 para Mostrar la lista de los clientes.");
+    puts("Escriba 2 para Dar de alta un cliente.");
+    puts("Escriba 3 para Dar de baja un cliente.");
+    puts("Escriba 4 para Modificar datos un cliente");    
+    puts("Escriba 5 para Ver los bienes de un cliente.");
+    puts("Escriba 6 para salir.");
+    scanf("%d",&val);
+    if(val==1){
+      system("clear");
+      imprimir_lista(Lista);
+    }
+    if(val==2){
+      system("clear");
+      char *ptr;
+      char nombre1[100];
+      DatosCliente dato_nuevo;  
+      puts("Escribe el nombre del nuevo cliente");
+      setbuf(stdin,NULL);
+      gets(nombre1);
+      strcpy(dato_nuevo.nombre,nombre1);
+      ptr=dato_nuevo.nombre;
+      insertar_nvo_cliente(ptr);
+      agregar_cliente_lista(&Lista, dato_nuevo);
+      imprimir_lista(Lista);
+      
+    }
+    if(val==3){
+      system("clear");
+      DatosCliente dato;
+      puts("Escribe el cliente a Eliminar");
+      setbuf(stdin,NULL);
+      gets(dato.nombre);
+      eliminar_en_lista(&Lista,dato);
+
+      imprimir_lista(Lista);
+    }
+    if(val==4){
+      system("clear");
+      DatosCliente dato;
+      puts("Escribe el nombre a modificar");
+      setbuf(stdin,NULL);
+      gets(dato.nombre);
+      modificar_en_lista(&Lista,dato);
+      imprimir_lista(Lista);
+      
+    }
+    if(val==5){
+      system("clear");
+      DatosCliente dato;
+      puts("Escribe el nombre del cliente");
+      setbuf(stdin,NULL);
+      gets(dato.nombre);
+      if(buscar_en_lista(&Lista,dato.nombre)==1){
+        int val2;
+        system("clear");
+        do{
+          printf("Bienvenido al submenu de bienes del cliente ");
+          puts(dato.nombre);
+          puts("Escriba 1 para Ver bienes del cliente.");
+          puts("Escriba 2 para Ingresar nuevo bien.");
+          puts("Escriba 3 para Modificar un bien.");
+          puts("Escriba 4 para Eliminar bien.");    
+          puts("Escriba 5 para regresar al menu principal.");
+          setbuf(stdin,NULL);
+          scanf("%d",&val2);
+        }while(val2!=5);
+        
+      }else{
+        puts("El cliente no existe");     
+      }
+      
+    }
+  
+  }while(val!=6);
 }
