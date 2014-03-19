@@ -626,8 +626,9 @@
             if(val2==4){
               int id;
               puts("Hola Escribe el ID del bien que quieres eliminar");
+              setbuf(stdin,NULL);
               scanf("%d" , &id);
-              EliminarNodoBien(cliente , id);
+              EliminarNodoBien(&cliente , id);
               eliminar_bien_id(id);
             }
           }while(val2!=5);
