@@ -238,12 +238,24 @@
       }
       return i;
     }
-  //Eliminar un nodo del cliente
-    void eliminar_nodo_clientes(ListaClientes** l1, int *llave, char *data){ 
-      printf("%s %s\n", "Usuario: ", data);
-      printf("%s %d\n", "ID: ", llave);
-      printf("%s\n", "Fue eliminado con Exito.");
+  //Eliminación
+    void eliminar_cliente_id(int id){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char sentencia[100]="delete from clientes where idclientes=";
+      char buffer[512]; 
+      sprintf(buffer,"%s %d;",sentencia,id);
+      mysql_query(conexion,buffer);
     }
+  //Obtener un ID
+    
   //Modificar un registro en la Lista de Clientes
     void modificar_en_lista(ListaClientes **l1, DatosCliente info){
       nodoCliente* iterador=(*l1)->headClientes;
@@ -381,6 +393,36 @@
         iterador=iterador->sig;
       }
     }
+  //Modificar un BIEN
+  void modificar_en_lista(ListaClientes **l1, DatosCliente info){
+      nodoCliente* iterador=(*l1)->headClientes;
+      while(iterador!=NULL){
+        if(strcmp((iterador->datos.nombre),(info.nombre))==0){
+          break;
+        }
+        iterador=iterador->sig;
+      }
+      if(iterador!=NULL){
+        char *nvo_nombre;
+        puts("Escribe el nuevo nombre");
+        setbuf(stdin,NULL);
+        gets(nvo_nombre);
+        while(strcmp(nvo_nombre,"")==0){
+          puts("Escriba un nombre valido");
+          setbuf(stdin,NULL);
+          gets(nvo_nombre);   
+        }
+        if(buscar_en_lista(l1,nvo_nombre)==0){
+          modificar_cliente(nvo_nombre, iterador->datos.nombre);
+          strcpy(iterador->datos.nombre,nvo_nombre);
+        }else{
+          puts("El cliente ya existe");
+        }
+      }else{
+        puts("El cliente no existe"); 
+      }
+  }
+
 //Main
   int main(){
     int val;
@@ -462,14 +504,14 @@
             puts("Escriba 5 para regresar al menu principal.");
             scanf("%d",&val2);
             if(val2==1){
-
+              //imprimir_bienes(nodoCliente );
             }
             if(val2==2){
               system("clear");
               char *nombre , *cliente, *fecha_ini,*fecha_fin;
               float monto;
               DatosBien datosBien;
-              strcpy(cliente,dato.nombre);
+              cliente = "Leonardo";
               puts("Escribe el nombre del nuevo bien");
               setbuf(stdin,NULL);
               gets(nombre);
@@ -486,8 +528,8 @@
               gets(fecha_fin);
               strcpy(datosBien.fecha_final,fecha_fin);
               insertar_nvo_bien(nombre,cliente,monto,fecha_ini,fecha_fin);
-              //agregar_cliente_lista(&Lista, datosBien);
-              //imprimir_lista(Lista);
+              //insertar_bien(&Lista, datosBien);
+              //imprimir_bienes(Lista);
             }
             if(val2==3){
 
