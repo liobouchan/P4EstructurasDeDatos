@@ -474,20 +474,23 @@
         imprimir_lista(Lista);
       }
       if(val==3){
-        char *data;
-        char nombre[100];
-        int *llave;
+        system("clear");
         DatosCliente dato;
-        puts("Escribe el cliente a Eliminar");
+        puts("Escribe el nombre a eliminar");
         setbuf(stdin,NULL);
-        gets(nombre);
-        strcpy(dato.nombre,nombre);
-        data = dato.nombre;
-        eliminar_cliente(data);
-        puts("Escribe el ID a Eliminar");
-        scanf("%d" , &llave);
-        eliminar_nodo_clientes(&Lista,llave,data);
-        imprimir_lista(Lista);
+        gets(dato.nombre);
+        while(strcmp(dato.nombre,"")==0){
+          puts("Escriba un nombre valido");
+          setbuf(stdin,NULL);
+          gets(dato.nombre);    
+        }
+        if(buscar_en_lista(&Lista,dato.nombre)==1){
+          eliminar_cliente_id(get_id(dato.nombre,Lista));
+          Lista=eliminar_nodo_lista(Lista,(get_id(dato.nombre,Lista)));
+          imprimir_lista(Lista);
+        }else{
+          puts("El cliente no existe");     
+        }
       }
       if(val==4){
         system("clear");
