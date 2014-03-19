@@ -402,35 +402,6 @@
         iterador=iterador->sig;
       }
     }
-  //Modificar un BIEN
-    void modificar_en_lista(ListaClientes **l1, DatosCliente info){
-        nodoCliente* iterador=(*l1)->headClientes;
-        while(iterador!=NULL){
-          if(strcmp((iterador->datos.nombre),(info.nombre))==0){
-            break;
-          }
-          iterador=iterador->sig;
-        }
-        if(iterador!=NULL){
-          char *nvo_nombre;
-          puts("Escribe el nuevo nombre");
-          setbuf(stdin,NULL);
-          gets(nvo_nombre);
-          while(strcmp(nvo_nombre,"")==0){
-            puts("Escriba un nombre valido");
-            setbuf(stdin,NULL);
-            gets(nvo_nombre);   
-          }
-          if(buscar_en_lista(l1,nvo_nombre)==0){
-            modificar_cliente(nvo_nombre, iterador->datos.nombre);
-            strcpy(iterador->datos.nombre,nvo_nombre);
-          }else{
-            puts("El cliente ya existe");
-          }
-        }else{
-          puts("El cliente no existe"); 
-        }
-    }
   //Eliminar nodo de la Lista
     ListaClientes* eliminar_nodo_lista(ListaClientes* lista, int id){
       nodoCliente* aux1, *aux2;
