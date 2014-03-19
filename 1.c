@@ -270,91 +270,93 @@
         puts("El cliente no existe"); 
       }
     }
-int main(){
-  int val;
-  ListaClientes *Lista;
-  Lista=consulta();
-  system("clear");
-  do{
-    puts("Bienvenido al Sistema de Bienes. ¿Que desea realizar? ");
-    puts("Escriba 1 para Mostrar la lista de los clientes.");
-    puts("Escriba 2 para Dar de alta un cliente.");
-    puts("Escriba 3 para Dar de baja un cliente.");
-    puts("Escriba 4 para Modificar datos un cliente");    
-    puts("Escriba 5 para Ver los bienes de un cliente.");
-    puts("Escriba 6 para salir.");
-    scanf("%d",&val);
-    if(val==1){
-      system("clear");
-      imprimir_lista(Lista);
-    }
-    if(val==2){
-      system("clear");
-      char *ptr;
-      char nombre1[100];
-      DatosCliente dato_nuevo;  
-      puts("Escribe el nombre del nuevo cliente");
-      setbuf(stdin,NULL);
-      gets(nombre1);
-      strcpy(dato_nuevo.nombre,nombre1);
-      ptr=dato_nuevo.nombre;
-      insertar_nvo_cliente(ptr);
-      agregar_cliente_lista(&Lista, dato_nuevo);
-      imprimir_lista(Lista);
-    }
-    if(val==3){
-      char *data;
-      char nombre[100];
-      int *llave;
-      DatosCliente dato;
-      puts("Escribe el cliente a Eliminar");
-      setbuf(stdin,NULL);
-      gets(nombre);
-      strcpy(dato.nombre,nombre);
-      data = dato.nombre;
-      eliminar_cliente(data);
-      puts("Escribe el ID a Eliminar");
-      scanf("%d" , &llave);
-      eliminar_nodo_clientes(&Lista,llave,data);
-      imprimir_lista(Lista);
-    }
-    if(val==4){
-      system("clear");
-      DatosCliente dato;
-      puts("Escribe el nombre a modificar");
-      setbuf(stdin,NULL);
-      gets(dato.nombre);
-      modificar_en_lista(&Lista,dato);
-      imprimir_lista(Lista);
-      
-    }
-    if(val==5){
-      system("clear");
-      DatosCliente dato;
-      int net;
-      puts("Escribe el nombre del cliente");
-      setbuf(stdin,NULL);
-      gets(dato.nombre);
-      puts("Escribe tu NETKEY");
-      scanf("%d", &net);
-      if(buscar_en_lista(&Lista,dato.nombre)==1){
-        int val2;
+  
+//Main
+  int main(){
+    int val;
+    ListaClientes *Lista;
+    Lista=consulta();
+    system("clear");
+    do{
+      puts("Bienvenido al Sistema de Bienes. ¿Que desea realizar? ");
+      puts("Escriba 1 para Mostrar la lista de los clientes.");
+      puts("Escriba 2 para Dar de alta un cliente.");
+      puts("Escriba 3 para Dar de baja un cliente.");
+      puts("Escriba 4 para Modificar datos un cliente");    
+      puts("Escriba 5 para Ver los bienes de un cliente.");
+      puts("Escriba 6 para salir.");
+      scanf("%d",&val);
+      if(val==1){
         system("clear");
-        do{
-          printf("Bienvenido al submenu de bienes del cliente ");
-          puts(dato.nombre);
-          puts("Escriba 1 para Ver bienes del cliente.");
-          puts("Escriba 2 para Ingresar nuevo bien.");
-          puts("Escriba 3 para Modificar un bien.");
-          puts("Escriba 4 para Eliminar bien.");    
-          puts("Escriba 5 para regresar al menu principal.");
-          setbuf(stdin,NULL);
-          scanf("%d",&val2);
-        }while(val2!=5);
-        
-      }else{
-        puts("El cliente no existe");
+        imprimir_lista(Lista);
       }
-    }
-  }while(val!=6);
-}
+      if(val==2){
+        system("clear");
+        char *ptr;
+        char nombre1[100];
+        DatosCliente dato_nuevo;  
+        puts("Escribe el nombre del nuevo cliente");
+        setbuf(stdin,NULL);
+        gets(nombre1);
+        strcpy(dato_nuevo.nombre,nombre1);
+        ptr=dato_nuevo.nombre;
+        insertar_nvo_cliente(ptr);
+        agregar_cliente_lista(&Lista, dato_nuevo);
+        imprimir_lista(Lista);
+      }
+      if(val==3){
+        char *data;
+        char nombre[100];
+        int *llave;
+        DatosCliente dato;
+        puts("Escribe el cliente a Eliminar");
+        setbuf(stdin,NULL);
+        gets(nombre);
+        strcpy(dato.nombre,nombre);
+        data = dato.nombre;
+        eliminar_cliente(data);
+        puts("Escribe el ID a Eliminar");
+        scanf("%d" , &llave);
+        eliminar_nodo_clientes(&Lista,llave,data);
+        imprimir_lista(Lista);
+      }
+      if(val==4){
+        system("clear");
+        DatosCliente dato;
+        puts("Escribe el nombre a modificar");
+        setbuf(stdin,NULL);
+        gets(dato.nombre);
+        modificar_en_lista(&Lista,dato);
+        imprimir_lista(Lista);
+        
+      }
+      if(val==5){
+        system("clear");
+        DatosCliente dato;
+        int net;
+        puts("Escribe el nombre del cliente");
+        setbuf(stdin,NULL);
+        gets(dato.nombre);
+        puts("Escribe tu NETKEY");
+        scanf("%d", &net);
+        if(buscar_en_lista(&Lista,dato.nombre)==1){
+          int val2;
+          system("clear");
+          do{
+            printf("Bienvenido al submenu de bienes del cliente ");
+            puts(dato.nombre);
+            puts("Escriba 1 para Ver bienes del cliente.");
+            puts("Escriba 2 para Ingresar nuevo bien.");
+            puts("Escriba 3 para Modificar un bien.");
+            puts("Escriba 4 para Eliminar bien.");    
+            puts("Escriba 5 para regresar al menu principal.");
+            setbuf(stdin,NULL);
+            scanf("%d",&val2);
+          }while(val2!=5);
+          
+        }else{
+          puts("El cliente no existe");
+        }
+      }
+    }while(val!=6);
+  }
