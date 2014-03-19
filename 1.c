@@ -242,20 +242,10 @@ int buscar_en_lista(ListaClientes **l1, char* nombre){
   return i;
 }
 
-    void eliminar_nodo_clientes(ListaClientes** l1, DatosCliente info){ 
-      nodoCliente *iterador , *aux;
-      while(iterador != NULL ){
-        if (strcmp((iterador->datos.nombre),(info.nombre))==0){
-          aux = (iterador)->sig;
-          (iterador)->ant->sig = aux;
-          aux->ant = (iterador)->ant;
-          free(iterador);
-          (iterador) = aux; 
-        }
-        else{
-          iterador = iterador->sig;
-        }
-      }
+    void eliminar_nodo_clientes(ListaClientes** l1, int *llave, char *data){ 
+      printf("%s , %s\n", "Usuario: "data);
+      printf("%s , %d\n", "ID: "llave);
+      printf("%s\n", "Fue eliminado con Exito.");
     }
 
 void modificar_en_lista(ListaClientes **l1, DatosCliente info){
@@ -320,9 +310,9 @@ int main(){
       
     }
     if(val==3){
-      system("clear");
       char *data;
       char nombre[100];
+      int *llave;
       DatosCliente dato;
       puts("Escribe el cliente a Eliminar");
       setbuf(stdin,NULL);
@@ -330,7 +320,9 @@ int main(){
       strcpy(dato.nombre,nombre);
       data = dato.nombre;
       eliminar_cliente(data);
-      eliminar_nodo_clientes(&Lista,dato);
+      puts("Escribe el ID a Eliminar");
+      scanf("%d" , &llave);
+      eliminar_nodo_clientes(&Lista,llave,data);
       imprimir_lista(Lista);
     }
     if(val==4){
