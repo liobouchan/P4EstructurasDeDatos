@@ -238,7 +238,7 @@
       }
       return i;
     }
-  //Eliminación
+  //Eliminación por ID
     void eliminar_cliente_id(int id){
       MYSQL *conexion;
       MYSQL_RES *R;
@@ -255,7 +255,16 @@
       mysql_query(conexion,buffer);
     }
   //Obtener un ID
-    
+    int get_id(char*nombre,ListaClientes *lista){
+      nodoCliente *iterador=lista->headClientes;
+      while(iterador!=NULL){
+        if(strcmp((iterador->datos.nombre),(nombre))==0){
+          break;    
+        }
+        iterador=iterador->sig;
+      }
+      return (iterador->id);
+    }
   //Modificar un registro en la Lista de Clientes
     void modificar_en_lista(ListaClientes **l1, DatosCliente info){
       nodoCliente* iterador=(*l1)->headClientes;
@@ -394,34 +403,71 @@
       }
     }
   //Modificar un BIEN
-  void modificar_en_lista(ListaClientes **l1, DatosCliente info){
-      nodoCliente* iterador=(*l1)->headClientes;
-      while(iterador!=NULL){
-        if(strcmp((iterador->datos.nombre),(info.nombre))==0){
-          break;
+    void modificar_en_lista(ListaClientes **l1, DatosCliente info){
+        nodoCliente* iterador=(*l1)->headClientes;
+        while(iterador!=NULL){
+          if(strcmp((iterador->datos.nombre),(info.nombre))==0){
+            break;
+          }
+          iterador=iterador->sig;
         }
-        iterador=iterador->sig;
-      }
-      if(iterador!=NULL){
-        char *nvo_nombre;
-        puts("Escribe el nuevo nombre");
-        setbuf(stdin,NULL);
-        gets(nvo_nombre);
-        while(strcmp(nvo_nombre,"")==0){
-          puts("Escriba un nombre valido");
+        if(iterador!=NULL){
+          char *nvo_nombre;
+          puts("Escribe el nuevo nombre");
           setbuf(stdin,NULL);
-          gets(nvo_nombre);   
-        }
-        if(buscar_en_lista(l1,nvo_nombre)==0){
-          modificar_cliente(nvo_nombre, iterador->datos.nombre);
-          strcpy(iterador->datos.nombre,nvo_nombre);
+          gets(nvo_nombre);
+          while(strcmp(nvo_nombre,"")==0){
+            puts("Escriba un nombre valido");
+            setbuf(stdin,NULL);
+            gets(nvo_nombre);   
+          }
+          if(buscar_en_lista(l1,nvo_nombre)==0){
+            modificar_cliente(nvo_nombre, iterador->datos.nombre);
+            strcpy(iterador->datos.nombre,nvo_nombre);
+          }else{
+            puts("El cliente ya existe");
+          }
         }else{
-          puts("El cliente ya existe");
+          puts("El cliente no existe"); 
         }
-      }else{
-        puts("El cliente no existe"); 
+    }
+  //Eliminar nodo de la Lista
+    ListaClientes* eliminar_nodo_lista(ListaClientes* lista, int id){
+      nodoCliente* aux1, *aux2;
+      aux1=lista->headClientes;
+      while(aux1->sig!=NULL && (aux1->sig->id)<id){
+        aux1=aux1->sig;
       }
-  }
+      aux2=lista->headClientes;
+      while(aux2->sig!=NULL && (aux1->id)<=id){
+        aux2=aux2->sig;
+      }
+      if(aux1->id==aux2->id){
+        puts("La lista quedo vacia");
+        return NULL;  
+      }
+      if(aux1->id==id){
+        aux1=aux1->sig;
+        aux1->ant=NULL;
+        lista->headClientes=aux1;
+        return lista;
+      }
+      if(aux2->id==id){
+        aux1->sig=NULL;
+        while(aux1->ant!=NULL){
+          aux1=aux1->ant;
+        }
+        lista->headClientes=aux1; 
+        return lista;
+      }
+      aux1->sig=aux2;
+      aux2->ant=aux1;
+      while(aux1->ant!=NULL){
+        aux1=aux1->ant;
+      }
+      lista->headClientes=aux1; 
+      return lista;
+    }
 
 //Main
   int main(){
