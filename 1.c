@@ -300,7 +300,59 @@
       iterador->sig=aux;
       return;
     }
+  nodoCliente* cargar_bienes(ListaClientes **lista,char *cliente){
+  nodoCliente* iterador=(*lista)->headClientes;
+  while(iterador!=NULL){
+    if(strcmp((iterador->datos.nombre),(cliente))==0){
+      break;
+    }
+    iterador=iterador->sig;
+  }
+  MYSQL *conexion;
+  MYSQL_RES *R;
+    MYSQL_ROW COL;
+  char *servidor = "localhost";
+  char *usuario = "root";
+  char *pass = "1234";
+  char *base = "casaempenio";
+  conexion = mysql_init(NULL);
+    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+  char sentencia[100]="SELECT * from bienes where nombreCliente=";
+  char buffer[512]; 
+  sprintf(buffer,"%s '%s';",sentencia,cliente);
+  
+  mysql_query(conexion,buffer);
+    R= mysql_use_result(conexion);
+  if(R!=NULL){
+    COL = mysql_fetch_row(R);
     
+    while (COL != NULL){
+      
+      int id;
+      char *ptr,*ptr2,*ptr3,*ptr4,*ptr5;
+      DatosBien info;
+      ptr=COL[0];
+      ptr2=COL[1];
+      ptr3=COL[3];
+      ptr4=COL[4];
+      ptr5=COL[5];
+      id=atoi(ptr);     
+      strcpy(info.nombre,ptr2);
+      info.costo=atof(ptr3);
+      strcpy(info.fecha_inicio,ptr4);
+      strcpy(info.fecha_final,ptr5);  
+      insertar_bien(&iterador,id,info);
+      COL = mysql_fetch_row(R);
+      
+    }
+    
+  
+  }else{
+    puts("El cliente no tiene ningun bien registrado"); 
+  }
+  
+  return iterador;
+}
 //Main
   int main(){
     int val;
