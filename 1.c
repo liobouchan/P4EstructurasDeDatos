@@ -153,82 +153,76 @@
       mysql_query(conexion,buffer);
       mysql_close(conexion);
     }
+  //Eliminar un cliente
     void eliminar_cliente(char*nombre){
-  MYSQL *conexion;
-  MYSQL_RES *R;
-    MYSQL_ROW COL;
-  char *servidor = "localhost";
-  char *usuario = "root";
-  char *pass = "1234";
-  char *base = "casaempenio";
-  conexion = mysql_init(NULL);
-    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
-  char *sentencia="DELETE FROM clientes where nombre=";
-  char buffer[500];
-  sprintf(buffer,"%s'%s'; ",sentencia,nombre);
-  mysql_query(conexion,buffer);
-  mysql_close(conexion);
-  
-}
-
-void modificar_cliente(char*nombre, char*nombre2){
-  MYSQL *conexion;
-  MYSQL_RES *R;
-    MYSQL_ROW COL;
-  char *servidor = "localhost";
-  char *usuario = "root";
-  char *pass = "1234";
-  char *base = "casaempenio";
-  conexion = mysql_init(NULL);
-    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
-  char *sentencia = "update clientes set nombre=";
-    char *sentencia2 = "WHERE nombre=";
-  char buffer[500];
-  sprintf(buffer,"%s '%s' %s '%s';",sentencia,nombre,sentencia2,nombre2);
-  mysql_query(conexion,buffer);
-  mysql_close(conexion);
-  
-}
-
-void agregar_cliente_lista(ListaClientes **l1, DatosCliente info_nueva){
-  MYSQL *conexion;
-  MYSQL_RES *R;
-    MYSQL_ROW COL;
-  char *servidor = "localhost";
-  char *usuario = "root";
-  char *pass = "1234";
-  char *base = "casaempenio";
-  conexion = mysql_init(NULL);
-    mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
-  char *sentencia="SELECT * from clientes where nombre=";
-  char buffer[500];
-  sprintf(buffer,"%s '%s' ;",sentencia,(info_nueva.nombre));
-  mysql_query(conexion,buffer);
-  R= mysql_use_result(conexion);
-  if(R!=NULL){
-    COL = mysql_fetch_row(R);
-    
-    while (COL != NULL){
-      
-      int id;
-      char *ptr,*ptr2;
-      DatosCliente info;
-      ptr=COL[0];
-      ptr2=COL[1];
-      id=atoi(ptr);
-      strcpy(info.nombre,ptr2);
-        
-      insertar_nodo_clientes(l1,id,info);
-      COL = mysql_fetch_row(R);
-      
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char *sentencia="DELETE FROM clientes where nombre=";
+      char buffer[500];
+      sprintf(buffer,"%s'%s'; ",sentencia,nombre);
+      mysql_query(conexion,buffer);
+      mysql_close(conexion);
     }
-    
-  }else{
-    puts("El dato solicitado no se pudo ingresar en la base de datos"); 
-  }
-  
-  mysql_close(conexion);
-}
+  //Modificar un cliente
+    void modificar_cliente(char*nombre, char*nombre2){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char *sentencia = "update clientes set nombre=";
+      char *sentencia2 = "WHERE nombre=";
+      char buffer[500];
+      sprintf(buffer,"%s '%s' %s '%s';",sentencia,nombre,sentencia2,nombre2);
+      mysql_query(conexion,buffer);
+      mysql_close(conexion);
+    }
+  //Agregar cliente a Lista de Clientes
+    void agregar_cliente_lista(ListaClientes **l1, DatosCliente info_nueva){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char *sentencia="SELECT * from clientes where nombre=";
+      char buffer[500];
+      sprintf(buffer,"%s '%s' ;",sentencia,(info_nueva.nombre));
+      mysql_query(conexion,buffer);
+      R= mysql_use_result(conexion);
+      if(R!=NULL){
+        COL = mysql_fetch_row(R);
+        while (COL != NULL){
+          int id;
+          char *ptr,*ptr2;
+          DatosCliente info;
+          ptr=COL[0];
+          ptr2=COL[1];
+          id=atoi(ptr);
+          strcpy(info.nombre,ptr2);
+          insertar_nodo_clientes(l1,id,info);
+          COL = mysql_fetch_row(R);
+        }
+      }else{
+        puts("El dato solicitado no se pudo ingresar en la base de datos"); 
+      }
+      mysql_close(conexion);
+    }
+  //Buscar el nombre de un cliente en la Lista de Clientes
 int buscar_en_lista(ListaClientes **l1, char* nombre){
   nodoCliente* iterador=(*l1)->headClientes;  
   int i=0;
@@ -243,8 +237,8 @@ int buscar_en_lista(ListaClientes **l1, char* nombre){
 }
 
     void eliminar_nodo_clientes(ListaClientes** l1, int *llave, char *data){ 
-      printf("%s , %s\n", "Usuario: "data);
-      printf("%s , %d\n", "ID: "llave);
+      printf("%s %s\n", "Usuario: ", data);
+      printf("%s %d\n", "ID: ", llave);
       printf("%s\n", "Fue eliminado con Exito.");
     }
 
@@ -307,7 +301,6 @@ int main(){
       insertar_nvo_cliente(ptr);
       agregar_cliente_lista(&Lista, dato_nuevo);
       imprimir_lista(Lista);
-      
     }
     if(val==3){
       char *data;
@@ -338,9 +331,12 @@ int main(){
     if(val==5){
       system("clear");
       DatosCliente dato;
+      int net;
       puts("Escribe el nombre del cliente");
       setbuf(stdin,NULL);
       gets(dato.nombre);
+      puts("Escribe tu NETKEY");
+      scanf("%d", &net);
       if(buscar_en_lista(&Lista,dato.nombre)==1){
         int val2;
         system("clear");
@@ -357,10 +353,8 @@ int main(){
         }while(val2!=5);
         
       }else{
-        puts("El cliente no existe");     
+        puts("El cliente no existe");
       }
-      
     }
-  
   }while(val!=6);
 }
