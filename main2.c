@@ -459,7 +459,7 @@
     }
   //Eliminar un Bien de la Lista
       void EliminarNodoBien( nodoCliente **nodocliente , int id){
-        nodoBien *iterador = nodoCliente -> headBien;
+        nodoBien *iterador = (*nodocliente) -> headBien;
         while(iterador -> sig != NULL && iterador->ID < id){
           iterador = iterador -> sig;
         }
@@ -603,8 +603,8 @@
               setbuf(stdin,NULL);
               scanf("%d",&llave);
               if(buscar_bien_lista(cliente,llave)==1){
+                int val3;
                 do{
-                  int val3;
                   puts("¿Que desea modificar");
                   puts("Escriba 1 para el nombre del producto");
                   puts("Escriba 2 para el monto del producto");
@@ -614,7 +614,7 @@
                   setbuf(stdin,NULL);
                   scanf("%d",&val3);
                   if(val3==1){
-                    char nvo_nombre[100]
+                    char nvo_nombre[100];
                     puts("Escriba el nuevo nombre del producto");
                     gets(nvo_nombre);
                   }
