@@ -13,11 +13,14 @@
   typedef struct{
     char nombre[100];
     float costo;
+    char fecha_inicio[45];
+    char fecha_final[45];
   }DatosBien;
 
   typedef struct nodoBien{
     DatosBien datos; 
     int ID;
+    struct nodoBien* sig;
   }nodoBien;
 
   typedef struct nodo{
@@ -449,4 +452,3 @@
       }
     }while(val!=6);
   }
-  
