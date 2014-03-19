@@ -242,27 +242,21 @@ int buscar_en_lista(ListaClientes **l1, char* nombre){
   return i;
 }
 
-void eliminar_en_lista(ListaClientes **l1, DatosCliente info){
-  nodoCliente* iterador=(*l1)->headClientes;
-  while(iterador!=NULL){
-    if(strcmp((iterador->datos.nombre),(info.nombre))==0){
-    break;
+    void eliminar_nodo_clientes(ListaClientes** l1, DatosCliente info){ 
+      nodoCliente *iterador , *aux;
+      while(iterador != NULL ){
+        if (strcmp((iterador->datos.nombre),(info.nombre))==0){
+          aux = (iterador)->sig;
+          (iterador)->ant->sig = aux;
+          aux->ant = (iterador)->ant;
+          free(iterador);
+          (iterador) = aux; 
+        }
+        else{
+          iterador = iterador->sig;
+        }
+      }
     }
-    iterador=iterador->sig;
-  }
-  if(iterador!=NULL){
-    char *nvo_nombre = NULL;
-    if(buscar_en_lista(l1,info.nombre)==0){
-      modificar_cliente(nvo_nombre, iterador->datos.sig);
-      strcpy(iterador->datos.sig,nvo_nombre);
-      strcpy(iterador->datos.ant,nvo_nombre);
-    }else{
-      puts("El cliente ya existe");
-    }
-  }else{
-    puts("El cliente no existe"); 
-  }
-}
 
 void modificar_en_lista(ListaClientes **l1, DatosCliente info){
   nodoCliente* iterador=(*l1)->headClientes;
@@ -327,12 +321,16 @@ int main(){
     }
     if(val==3){
       system("clear");
+      char *data;
+      char nombre[100];
       DatosCliente dato;
       puts("Escribe el cliente a Eliminar");
       setbuf(stdin,NULL);
-      gets(dato.nombre);
-      eliminar_en_lista(&Lista,dato);
-
+      gets(nombre);
+      strcpy(dato.nombre,nombre);
+      data = dato.nombre;
+      eliminar_cliente(data);
+      eliminar_nodo_clientes(&Lista,dato);
       imprimir_lista(Lista);
     }
     if(val==4){
