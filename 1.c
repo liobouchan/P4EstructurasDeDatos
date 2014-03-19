@@ -235,7 +235,7 @@
       }
       return i;
     }
-
+  //Eliminar un nodo del cliente
     void eliminar_nodo_clientes(ListaClientes** l1, int *llave, char *data){ 
       printf("%s %s\n", "Usuario: ", data);
       printf("%s %d\n", "ID: ", llave);
