@@ -274,7 +274,7 @@
       }
     }
   //Insertar nuevo bien
-    void insertar_nvo_bien(char*nombre, char*cliente, int *monto, int *fecha_ini, int *fecha_fin){
+    void insertar_nvo_bien(char*nombre, char*cliente, float monto, char *fecha_ini, char *fecha_fin){
       MYSQL *conexion;
       MYSQL_RES *R;
       MYSQL_ROW COL;
@@ -460,34 +460,40 @@
             puts("Escriba 3 para Modificar un bien.");
             puts("Escriba 4 para Eliminar bien.");    
             puts("Escriba 5 para regresar al menu principal.");
-            setbuf(stdin,NULL);
             scanf("%d",&val2);
-            if(val==2){
+            if(val2==1){
+
+            }
+            if(val2==2){
               system("clear");
-              char*nombre , *cliente;
-              int *monto,*fecha_ini,*fecha_fin;
-              char nombre1[100];
-              DatosBien datosBien;  
+              char *nombre , *cliente, *fecha_ini,*fecha_fin;
+              float monto;
+              DatosBien datosBien;
+              strcpy(cliente,dato.nombre);
               puts("Escribe el nombre del nuevo bien");
               setbuf(stdin,NULL);
               gets(nombre);
-              strcpy(datosBien.nombre,nombre1);
+              strcpy(datosBien.nombre,nombre);
               puts("Escribe el costo");
-              setbuf(stdin,NULL);
-              gets(nombre);
-              strcpy(datosBien.nombre,nombre1);
+              scanf("%f" , &monto);
+              datosBien.costo = monto;
               puts("Escribe la fecha de inicio");
               setbuf(stdin,NULL);
-              gets(nombre);
-              strcpy(datosBien.nombre,nombre1);
+              gets(fecha_ini);
+              strcpy(datosBien.fecha_inicio,fecha_ini);
               puts("Escribe el vencimiento");
               setbuf(stdin,NULL);
-              gets(nombre);
-              strcpy(datosBien.nombre,nombre1);
-              ptr=datosBien.nombre;
-              insertar_nvo_cliente(ptr);
-              agregar_cliente_lista(&Lista, datosBien);
-              imprimir_lista(Lista);
+              gets(fecha_fin);
+              strcpy(datosBien.fecha_final,fecha_fin);
+              insertar_nvo_bien(nombre,cliente,monto,fecha_ini,fecha_fin);
+              //agregar_cliente_lista(&Lista, datosBien);
+              //imprimir_lista(Lista);
+            }
+            if(val2==3){
+
+            }
+            if(val2==4){
+
             }
           }while(val2!=5);
             Lista->headClientes->headBien=NULL;
