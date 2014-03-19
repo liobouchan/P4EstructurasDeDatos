@@ -273,6 +273,24 @@
         puts("El cliente no existe"); 
       }
     }
+  //Insertar nuevo cliente
+    void insertar_nvo_bien(char*nombre, char*cliente, int *monto, int *fecha_ini, int *fecha_fin){
+      MYSQL *conexion;
+      MYSQL_RES *R;
+      MYSQL_ROW COL;
+      char *servidor = "localhost";
+      char *usuario = "root";
+      char *pass = "1234";
+      char *base = "casaempenio";
+
+      conexion = mysql_init(NULL);
+      mysql_real_connect(conexion,servidor,usuario,pass,base,0,NULL,0);
+      char *sentencia="insert into bienes(nombreBien,nombreCliente,monto,fecha_inicio,fecha_final) values(";
+      char buffer[500];
+      sprintf(buffer,"%s'%s%s%s%s%s'); ",sentencia,nombre,cliente,monto,fecha_ini,fecha_fin);
+      mysql_query(conexion,buffer);
+      mysql_close(conexion);
+    }
   //Insetart un Nodo de BIEN
     void insertar_bien(nodoCliente** cliente, int llave,DatosBien info){
       nodoBien *aux, *iterador;
@@ -444,8 +462,24 @@
             puts("Escriba 5 para regresar al menu principal.");
             setbuf(stdin,NULL);
             scanf("%d",&val2);
+            /*if(val==2){
+              system("clear");
+              char*nombre , *cliente;
+              int *monto,*fecha_ini,*fecha_fin;
+              char nombre1[100];
+              DatosBien datosBien;  
+              puts("Escribe el nombre del nuevo bien");
+              setbuf(stdin,NULL);
+              gets(nombre);
+              strcpy(dato_nuevo.nombre,nombre1);
+              ptr=dato_nuevo.nombre;
+              insertar_nvo_cliente(ptr);
+              agregar_cliente_lista(&Lista, dato_nuevo);
+              imprimir_lista(Lista);
+            }*/
           }while(val2!=5);
-          
+            Lista->headClientes->headBien=NULL;
+            //free(cliente);
         }else{
           puts("El cliente no existe");
         }
