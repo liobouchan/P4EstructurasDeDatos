@@ -514,6 +514,7 @@
         if(buscar_en_lista(&Lista,dato.nombre)==1){
           int val2;
           system("clear");
+          nodoCliente* cliente = cargar_bienes(&Lista , dato.nombre);
           do{
             printf("Bienvenido al submenu de bienes del cliente ");
             puts(dato.nombre);
@@ -522,9 +523,10 @@
             puts("Escriba 3 para Modificar un bien.");
             puts("Escriba 4 para Eliminar bien.");    
             puts("Escriba 5 para regresar al menu principal.");
+            setbuf(stdin,NULL);
             scanf("%d",&val2);
             if(val2==1){
-              //imprimir_bienes(nodoCliente );
+              imprimir_bienes(cliente);
             }
             if(val2==2){
               system("clear");
@@ -559,7 +561,7 @@
             }
           }while(val2!=5);
             Lista->headClientes->headBien=NULL;
-            //free(cliente);
+            free(cliente);
         }else{
           puts("El cliente no existe");
         }
