@@ -222,19 +222,19 @@
       }
       mysql_close(conexion);
     }
-  //Buscar el nombre de un cliente en la Lista de Clientes
-int buscar_en_lista(ListaClientes **l1, char* nombre){
-  nodoCliente* iterador=(*l1)->headClientes;  
-  int i=0;
-  while(iterador!=NULL){
-    if(strcmp((iterador->datos.nombre),nombre)==0){
-    i=1;
-    break;
+  //Buscar a un cliente en la Lista de Clientes
+    int buscar_en_lista(ListaClientes **l1, char* nombre){
+      nodoCliente* iterador=(*l1)->headClientes;  
+      int i=0;
+      while(iterador!=NULL){
+        if(strcmp((iterador->datos.nombre),nombre)==0){
+          i=1;
+          break;
+        }
+        iterador=iterador->sig;
+      }
+      return i;
     }
-    iterador=iterador->sig;
-  }
-  return i;
-}
 
     void eliminar_nodo_clientes(ListaClientes** l1, int *llave, char *data){ 
       printf("%s %s\n", "Usuario: ", data);
