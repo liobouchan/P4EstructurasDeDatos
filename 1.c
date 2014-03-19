@@ -348,18 +348,18 @@
       }
       return iterador;
     }
-  void imprimir_bienes(nodoCliente* cliente){
-  nodoBien *iterador= cliente->headBien;
-  char buffer[600];
-  while(iterador!=NULL){
-           sprintf(buffer,"%s         %s             %s           %s",iterador->datos.nombre,cliente->datos.nombre,iterador->datos.fecha_inicio,iterador->datos.fecha_final);
-    puts("IDProducto   Monto   Producto   Cliente      Fecha_inicio   Fecha_fin");
+  //Imprimir los BIENES
+    void imprimir_bienes(nodoCliente* cliente){
+      nodoBien *iterador= cliente->headBien;
+      char buffer[600];
+      while(iterador!=NULL){
+        sprintf(buffer,"%s         %s             %s           %s",iterador->datos.nombre,cliente->datos.nombre,iterador->datos.fecha_inicio,iterador->datos.fecha_final);
+        puts("IDProducto   Monto   Producto   Cliente      Fecha_inicio   Fecha_fin");
         printf(" %d           %f      ",iterador->ID,iterador->datos.costo);
-    puts(buffer);
-  iterador=iterador->sig;
-  }
-
-}
+        puts(buffer);
+        iterador=iterador->sig;
+      }
+    }
 //Main
   int main(){
     int val;
@@ -449,3 +449,4 @@
       }
     }while(val!=6);
   }
+  
