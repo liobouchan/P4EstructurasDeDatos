@@ -273,7 +273,7 @@
         puts("El cliente no existe"); 
       }
     }
-  //Insertar nuevo cliente
+  //Insertar nuevo bien
     void insertar_nvo_bien(char*nombre, char*cliente, int *monto, int *fecha_ini, int *fecha_fin){
       MYSQL *conexion;
       MYSQL_RES *R;
@@ -462,7 +462,7 @@
             puts("Escriba 5 para regresar al menu principal.");
             setbuf(stdin,NULL);
             scanf("%d",&val2);
-            /*if(val==2){
+            if(val==2){
               system("clear");
               char*nombre , *cliente;
               int *monto,*fecha_ini,*fecha_fin;
@@ -471,12 +471,24 @@
               puts("Escribe el nombre del nuevo bien");
               setbuf(stdin,NULL);
               gets(nombre);
-              strcpy(dato_nuevo.nombre,nombre1);
-              ptr=dato_nuevo.nombre;
+              strcpy(datosBien.nombre,nombre1);
+              puts("Escribe el costo");
+              setbuf(stdin,NULL);
+              gets(nombre);
+              strcpy(datosBien.nombre,nombre1);
+              puts("Escribe la fecha de inicio");
+              setbuf(stdin,NULL);
+              gets(nombre);
+              strcpy(datosBien.nombre,nombre1);
+              puts("Escribe el vencimiento");
+              setbuf(stdin,NULL);
+              gets(nombre);
+              strcpy(datosBien.nombre,nombre1);
+              ptr=datosBien.nombre;
               insertar_nvo_cliente(ptr);
-              agregar_cliente_lista(&Lista, dato_nuevo);
+              agregar_cliente_lista(&Lista, datosBien);
               imprimir_lista(Lista);
-            }*/
+            }
           }while(val2!=5);
             Lista->headClientes->headBien=NULL;
             //free(cliente);
