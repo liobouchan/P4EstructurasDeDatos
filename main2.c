@@ -253,6 +253,7 @@
       char buffer[512]; 
       sprintf(buffer,"%s %d;",sentencia,id);
       mysql_query(conexion,buffer);
+      mysql_close(conexion);
     }
   //Obtener un ID
     int get_id(char*nombre,ListaClientes *lista){
@@ -384,6 +385,7 @@
           strcpy(info.fecha_final,ptr5);  
           insertar_bien(&iterador,id,info);
           COL = mysql_fetch_row(R);
+          mysql_close(conexion);
         }
       }else{
         puts("El cliente no tiene ningun bien registrado"); 
@@ -480,6 +482,7 @@
       char buffer[512]; 
       sprintf(buffer,"%s %d;",sentencia,id);
       mysql_query(conexion,buffer);
+      mysql_close(conexion);
     }
 //Main
   int main(){
@@ -541,7 +544,6 @@
         gets(dato.nombre);
         modificar_en_lista(&Lista,dato);
         imprimir_lista(Lista);
-        
       }
       if(val==5){
         system("clear");
